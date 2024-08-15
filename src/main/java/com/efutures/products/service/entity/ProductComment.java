@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,9 +24,18 @@ public class ProductComment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
+    @Column(columnDefinition = "VARCHAR(300)")
     private String comment;
     @CreatedDate
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id",nullable = false,referencedColumnName = "id")
+    private Product product;
+
+    public ProductComment(String comment, Product product) {
+        this.comment = comment;
+        this.product = product;
+    }
 }
