@@ -1,6 +1,7 @@
 package com.efutures.products.service.service.impl;
 
 import com.efutures.products.service.dto.ProductDetailsInputDTO;
+import com.efutures.products.service.dto.ProductOutPutDTO;
 import com.efutures.products.service.entity.Product;
 import com.efutures.products.service.entity.ProductCategory;
 import com.efutures.products.service.exception.CustomException;
@@ -11,6 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,11 +24,12 @@ public class ProductServiceImpl implements ProductService {
     private final ProductCategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
-    private final ModelMapper mapper;
-    public ProductServiceImpl(ProductCategoryRepository categoryRepository, ProductRepository productRepository, ModelMapper mapper) {
+    private final ModelMapper modelMapper;
+    public ProductServiceImpl(ProductCategoryRepository categoryRepository, ProductRepository productRepository, ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
-        this.mapper = mapper;
+
+        this.modelMapper = modelMapper;
     }
     @Override
     public void createProduct(ProductDetailsInputDTO details) {
@@ -55,6 +60,23 @@ public class ProductServiceImpl implements ProductService {
         product.setStatus('D');
         productRepository.save(product);
     }
+
+    @Override
+    public List<ProductOutPutDTO> findProductByCategoryName(String categoryName) {
+        List<Product> products = productRepository.findAllByCategoryName(categoryName);
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductOutPutDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductOutPutDTO> findPremiumProductByPrice() {
+        List<Product> products = productRepository.findPremiumProductsByPrice();
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductOutPutDTO.class))
+                .collect(Collectors.toList());
+    }
+
     private ProductCategory createNewCategory(String name, String description) {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName(name);

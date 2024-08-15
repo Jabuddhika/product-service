@@ -5,5 +5,4 @@ import com.efutures.products.service.entity.ProductCategory;
 
 public interface ProductCategoryService {
 
-   ProductCategory findByName(String name);
 }

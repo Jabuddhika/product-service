@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 
 @CrossOrigin
@@ -39,6 +40,21 @@ public class ProductController {
         productService.deleteProduct(productId);
         return ResponseEntity.ok("product successfully deleted");
     }
+
+    @GetMapping("/by-category")
+    public ResponseEntity<?> findAllProductByCategoryName(@RequestParam(value = "category",required = true)
+                                                             String categoryName){
+        return ResponseEntity.ok(productService.findProductByCategoryName(categoryName));
+
+
+    }
+    @GetMapping("/by-price")
+    public ResponseEntity<?> findPremiumProductByPrice() {
+        return ResponseEntity.ok(productService.findPremiumProductByPrice());
+    }
+
+
+
 
 
 
