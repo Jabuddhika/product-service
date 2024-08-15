@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
+@EntityListeners(AuditingEntityListener.class)
 public class Product extends BaseEntity{
 
     @Id
@@ -30,17 +35,18 @@ public class Product extends BaseEntity{
     private BigDecimal price;
     @Column(columnDefinition = "CHAR(1)")
     private Character status;
-    @Column(name = "launch_date",nullable = false)
-    private Date launchDate;
+    @CreatedDate
+    @Column(name = "launch_date")
+    private LocalDate launchDate;
 
-    @ManyToOne
-    @JoinColumn(name = "product_category_id",referencedColumnName = "id",nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product_category_id",nullable = false,referencedColumnName = "id")
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private List<ProductComment> productCommentList = new ArrayList<>();
 
-    public Product(String name, String description, BigDecimal price, Character status, Date launchDate, ProductCategory productCategory) {
+    public Product(String name, String description, BigDecimal price, Character status, LocalDate launchDate, ProductCategory productCategory) {
         this.name = name;
         this.description = description;
         this.price = price;
