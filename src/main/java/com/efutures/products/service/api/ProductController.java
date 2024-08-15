@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.math.BigDecimal;
+
 
 
 @CrossOrigin
@@ -26,7 +25,6 @@ public class ProductController {
         productService.createProduct(inputDTO);
         return ResponseEntity.ok("Product successfully created");
     }
-
     @PatchMapping("/update/{product_id}")
     public ResponseEntity<?> updateProduct( @RequestBody @Valid ProductDetailsInputDTO dto,
                                             @PathVariable("product_id") Integer productId){
@@ -34,19 +32,15 @@ public class ProductController {
         productService.updateProduct(dto);
         return ResponseEntity.ok("product successfully updated");
     }
-
     @DeleteMapping("/remove/{product_id}")
     public ResponseEntity<?> removeProduct(@PathVariable("product_id") Integer productId){
         productService.deleteProduct(productId);
         return ResponseEntity.ok("product successfully deleted");
     }
-
     @GetMapping("/by-category")
     public ResponseEntity<?> findAllProductByCategoryName(@RequestParam(value = "category",required = true)
                                                              String categoryName){
         return ResponseEntity.ok(productService.findProductByCategoryName(categoryName));
-
-
     }
     @GetMapping("/by-price")
     public ResponseEntity<?> findPremiumProductByPrice() {

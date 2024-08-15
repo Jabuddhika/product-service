@@ -1,7 +1,6 @@
 package com.efutures.products.service.dto;
 
 import com.efutures.products.service.dto.util.ValidationGroups;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

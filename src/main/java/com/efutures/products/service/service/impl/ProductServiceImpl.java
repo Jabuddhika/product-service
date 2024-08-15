@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void createProduct(ProductDetailsInputDTO details) {
+        // checking category is present or not
         ProductCategory productCategory = categoryRepository.findByName(details.getCategory())
                 .orElseGet(() -> createNewCategory(details.getCategory(), details.getDescription()));
 
