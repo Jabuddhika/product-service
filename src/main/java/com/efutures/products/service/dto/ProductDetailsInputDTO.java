@@ -2,6 +2,7 @@ package com.efutures.products.service.dto;
 
 import com.efutures.products.service.dto.util.ValidationGroups;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.DecimalMin;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProductDetailsInputDTO implements Serializable {
 
     private Integer productId;
